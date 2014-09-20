@@ -1,0 +1,43 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+def langLevel = 1.7
+sourceCompatibility = langLevel
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile 'joda-time:joda-time:2.4'
+}
+
+test {
+	exclude '**/*IntegrationTest.*'
+}
+
+task integrationTest(dependsOn: jar, type: Test) {
+	include '**/*IntegrationTest.*'
+}
+
+task allTests(dependsOn: inOrder(test, integrationTest))
+
+tasks.withType(Test) {
+	maxParallelForks = 4
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
+
+def inOrder(Task... dependencies) {
+	dependencies.toList().collate(2, 1, false).each { first, second ->
+		second.mustRunAfter(first)
+	}
+}
+
+idea {
+	project {
+		jdkName = langLevel
+		languageLevel = langLevel
+	}
+}
