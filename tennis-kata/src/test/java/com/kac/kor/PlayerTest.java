@@ -5,18 +5,17 @@ import org.junit.Test;
 
 import static com.kac.kor.PlayerState.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class PlayerTest {
 
 	private Player player;
+	private Player opponent;
 
 	@Before
 	public void setup() {
 
 		player = new Player();
+		opponent = new Player();
 	}
 
 	@Test
@@ -53,7 +52,6 @@ public class PlayerTest {
 	@Test
 	public void ifPlayerHas40AndWinsTheBallThenWinsGame(){
 
-		Player opponent  = new Player();
 		score40Points(player);
 
 		player.winsBall();
@@ -64,13 +62,22 @@ public class PlayerTest {
 	@Test
 	public void BothPlayersHave40Points(){
 
-		Player opponent  = new Player();
-
 		score40Points(player);
 		score40Points(opponent);
 
 		assertEquals(DEUCE, opponent.getResult(player));
 		assertEquals(DEUCE, player.getResult(opponent));
+	}
+
+	@Test
+	public void gameIsInDeuceAndPlayerWinsTheBall(){
+
+		score40Points(player);
+		score40Points(opponent);
+
+		player.winsBall();
+
+		assertEquals(ADVANTAGE, player.getResult(opponent));
 	}
 
 	private void score40Points(Player player) {
@@ -83,7 +90,6 @@ public class PlayerTest {
 }
 //1. Each player can have either of these points in one game 0 15 30 40
 //2. If you have 40 and you win the ball you win the game, however there are special rules.
-
 //3. If both have 40 the players are deuce.
 // a. If the game is in deuce, the winner of a ball will have advantage and
 // game ball.
