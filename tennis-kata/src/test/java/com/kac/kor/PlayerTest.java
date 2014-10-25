@@ -54,11 +54,11 @@ public class PlayerTest {
 	public void ifPlayerHas40AndWinsTheBallThenWinsGame(){
 
 		Player opponent  = new Player();
-
 		score40Points(player);
-		player.winsBall();//have 40 and wins ball than wins the game
 
-		assertEquals(WIN, player.getResult(opponent));
+		player.winsBall();
+
+		assertEquals(WIN, opponent.getResult(player));
 	}
 
 	@Test
@@ -69,8 +69,8 @@ public class PlayerTest {
 		score40Points(player);
 		score40Points(opponent);
 
-		assertEquals(DEUCE, player.getResult(opponent));
 		assertEquals(DEUCE, opponent.getResult(player));
+		assertEquals(DEUCE, player.getResult(opponent));
 	}
 
 	private void score40Points(Player player) {
